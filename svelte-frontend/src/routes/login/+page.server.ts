@@ -1,20 +1,26 @@
-import type { Actions } from './$types';
+import type { Actions, PageServerLoad } from './$types';
 import { fail, redirect, type RequestEvent } from '@sveltejs/kit';
 
-export const actions = {
+export const load: PageServerLoad = (event) => {
+	const user = event.locals.user;
+
+	if (user) {
+		throw redirect(302, '/account');
+	}
+};
+
+export const actions: Actions = {
 	default: async (event: RequestEvent) => {
-		const { request, cookies } = event;
+		console.log('Login action');
+		const formData = Object.fromEntries(await event.request.formData());
 
-		const data = await request.formData();
+		if (!formData.email || !formData.password) {
+			return fail(400, {
+				error: 'Missing email or password'
+			});
+		}
 
-		const email = data.get('email');
-		const password = data.get('password');
-
-		console.log('🕵️‍♀️ email', email);
-		console.log('🔐 password', password);
-
-		if (!email) return fail(400, { email, incorrect: true });
-		if (!password) return fail(400, { password, incorrect: true });
+		const { email, password } = formData as { email: string; password: string };
 
 		// Login
 		const response = await fetch('http://localhost:1337/api/auth/local', {
@@ -23,18 +29,10 @@ export const actions = {
 			body: JSON.stringify({ identifier: email, password })
 		});
 
-		if (response.status === 400) {
-			console.error('❌ Error', response);
-			return fail(400, {
-				success: false,
-				message: 'Error 400'
-			});
-		}
-		if (response.status === 401) {
-			console.error('❌ Error', response);
+		if (response.status !== 200) {
+			console.error('response error', response);
 			return fail(401, {
-				success: false,
-				message: 'Username or password incorrect'
+				error: 'An error occured while trying to login'
 			});
 		}
 
@@ -43,12 +41,16 @@ export const actions = {
 		console.log('🔑 body', body);
 
 		if (body.jwt) {
-			cookies.set('token', body.jwt);
+			event.cookies.set('token', `Bearer ${body.jwt}`, {
+				httpOnly: true,
+				path: '/',
+				secure: true,
+				sameSite: 'strict',
+				maxAge: 60 * 60 * 24 // 1 day
+			});
+			console.log('✅ [Login] JWT set in cookie');
 		}
 
-		if (body.user) {
-			console.log(`✅ User ${body.user.username} connected`);
-			throw redirect(307, '/login');
-		}
+		throw redirect(302, '/account');
 	}
 } satisfies Actions;

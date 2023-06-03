@@ -5,20 +5,10 @@
 	import '@skeletonlabs/skeleton/styles/skeleton.css';
 	import '../app.postcss';
 
-	import { setContext } from 'svelte';
-	import { writable } from 'svelte/store';
-
-	import { enhance } from '$app/forms';
-
-	import type { User } from '../lib/types';
 	import type { LayoutData } from './$types';
 
 	export let data: LayoutData;
-
-	const user = writable<User | null>(null);
-	$: user.set(data.user);
-
-	setContext('user', user);
+	$: user = data.user;
 </script>
 
 <div class="app">
@@ -33,12 +23,19 @@
 					</a>
 				</svelte:fragment>
 				<svelte:fragment slot="trail">
-					{#if $user}
-						<form method="POST" use:enhance action="/logout">
-							<button type="submit" class="btn btn-sm variant-ghost-surface"> Logout </button>
+					{#if user}
+						<form method="POST" action="?/logout">
+							<button
+								type="submit"
+								name="logout"
+								value="true"
+								class="btn btn-sm variant-ghost-surface"
+							>
+								Logout
+							</button>
 						</form>
 						<a class="btn btn-sm variant-ghost-surface" href="/account" rel="noreferrer">
-							Account ({$user && $user.username})
+							Account ({user && user.username})
 						</a>
 					{:else}
 						<a class="btn btn-sm variant-ghost-surface" href="/login" rel="noreferrer"> Login </a>

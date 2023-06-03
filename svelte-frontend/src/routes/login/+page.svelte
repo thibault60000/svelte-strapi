@@ -1,44 +1,47 @@
 <script lang="ts">
-	import type { PageData, ActionData } from './$types';
+	import type { ActionData } from './$types';
 	import { enhance } from '$app/forms';
 
-	export let data: PageData;
 	export let form: ActionData;
-
-	let email = 'thibault.jeanpierre.dev@gmail.com';
-	let password = '';
 </script>
 
-<form method="POST" use:enhance class="container mx-auto my-4" data-testid="login-form">
-	<h1 class="text-center text-2xl font-bold">Login</h1>
-	<div class="my-1">
-		<label for="email">Email</label>
-		<input
-			data-testid="email-input"
-			type="email"
-			name="email"
-			placeholder="Enter your email"
-			bind:value={email}
-		/>
-	</div>
-	<div class="my-1">
-		<label for="password">Password </label>
-		<input
-			type="password"
-			name="password"
-			placeholder="Enter your password"
-			bind:value={password}
-			data-testid="password-input"
-		/>
-	</div>
-	<div class="my-3">
-		<button type="submit" class="submit" data-testid="login-button">Login</button>
-	</div>
+<svelte:head>
+	<title>Login</title>
+</svelte:head>
 
-	{#if form}
-		<p>{form.message}</p>
-	{/if}
-</form>
+<section>
+	<form method="POST" use:enhance class="container mx-auto my-4" data-testid="login-form">
+		<h1 class="text-center text-2xl font-bold">Login</h1>
+		<div class="my-1">
+			<label for="email">Email</label>
+			<input data-testid="email-input" type="email" name="email" placeholder="Enter your email" />
+		</div>
+		<div class="my-1">
+			<label for="password">Password </label>
+			<input
+				type="password"
+				name="password"
+				placeholder="Enter your password"
+				data-testid="password-input"
+			/>
+		</div>
+		<div class="my-3">
+			<button type="submit" class="submit" data-testid="login-button">Login</button>
+		</div>
+	</form>
+	<div class="my-3">
+		<p>
+			No account ?
+			<a href="/register" data-testid="register-button">Register</a>
+		</p>
+	</div>
+</section>
+
+{#if form?.error}
+	<div class="notice error">
+		{form.error}
+	</div>
+{/if}
 
 <style lang="postcss">
 	label {

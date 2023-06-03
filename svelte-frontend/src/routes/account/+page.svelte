@@ -1,16 +1,18 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
-	import type { User } from '../../lib/types';
-	import type { Writable } from 'svelte/store';
+	import type { PageData } from './$types';
+	import type { User } from '$lib/types';
 
-	const user: Writable<User> = getContext('user');
+	export let data: PageData;
+	$: user = data.user as User;
 </script>
 
-<div>
-	<h1>Mon compte</h1>
-	{#if $user}
-		<p>
-			{$user.username}
-		</p>
-	{/if}
-</div>
+<svelte:head>
+	<title>My account</title>
+</svelte:head>
+
+<section>
+	<div>
+		<h1>My account</h1>
+		<p>Hello, {user?.username}</p>
+	</div>
+</section>
