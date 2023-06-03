@@ -1,7 +1,7 @@
 # JSON response 200
 
 **POST**
-on `http://localhost:1337/api/auth/local`
+on `http://localhost:1337/api/auth/local/register`
 
 ```javascript
 {

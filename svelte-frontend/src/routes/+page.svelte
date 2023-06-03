@@ -9,7 +9,7 @@
 	$: pagination = data.pagination;
 
 	$: table = {
-		head: ['Nom', 'Description', 'Créé le'],
+		head: ['Name', 'Description', 'Created At'],
 		body: tableMapperValues(restaurants, ['name', 'description', 'created_at']),
 		meta: tableMapperValues(restaurants, ['name', 'description', 'created_at']),
 		foot: ['Total', '', `<code class="code">${pagination.total}</code>`]
@@ -22,6 +22,6 @@
 </svelte:head>
 
 <section class="flex flex-col gap-4">
-	<h1>Liste des restaurants</h1>
+	<h1>Restaurants list</h1>
 	<Table source={table} />
 </section>
