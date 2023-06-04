@@ -1,5 +1,7 @@
 import type { Actions, PageServerLoad } from './$types';
 import { fail, redirect, type RequestEvent } from '@sveltejs/kit';
+import { OAuth2Client } from 'google-auth-library';
+import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from '$env/static/private';
 
 export const load: PageServerLoad = (event) => {
 	const user = event.locals.user;
@@ -10,7 +12,7 @@ export const load: PageServerLoad = (event) => {
 };
 
 export const actions: Actions = {
-	default: async (event: RequestEvent) => {
+	login: async (event: RequestEvent) => {
 		console.log('Login action');
 		const formData = Object.fromEntries(await event.request.formData());
 
@@ -52,5 +54,21 @@ export const actions: Actions = {
 		}
 
 		throw redirect(302, '/account');
+	},
+	OAuth2: async () => {
+		const redirectURL = 'http://localhost:5173/oauth';
+
+		console.log('client id', GOOGLE_CLIENT_ID);
+
+		const oAuth2Client = new OAuth2Client(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, redirectURL);
+
+		// Generate the url that will be used for the consent dialog.
+		const authorizeUrl = oAuth2Client.generateAuthUrl({
+			access_type: 'offline',
+			scope: 'https://www.googleapis.com/auth/userinfo.profile  openid ',
+			prompt: 'consent'
+		});
+
+		throw redirect(302, authorizeUrl);
 	}
 } satisfies Actions;

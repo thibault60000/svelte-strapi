@@ -10,7 +10,13 @@
 </svelte:head>
 
 <section>
-	<form method="POST" use:enhance class="container mx-auto my-4" data-testid="login-form">
+	<form
+		method="POST"
+		action="?/login"
+		use:enhance
+		class="container mx-auto my-4"
+		data-testid="login-form"
+	>
 		<h1 class="text-center text-2xl font-bold">Login</h1>
 		<div class="my-1">
 			<label for="email">Email</label>
@@ -29,6 +35,19 @@
 			<button type="submit" class="submit" data-testid="login-button">Login</button>
 		</div>
 	</form>
+	<div class="m-3 w-[300px]">
+		<form class="auth-form" method="post" action="?/OAuth2">
+			<div>
+				<button class="btn-auth" type="submit">
+					<img
+						class="btn-auth-img"
+						src="/google_signin_buttons/web/1x/btn_google_signin_dark_pressed_web.png"
+						alt="google sign in"
+					/>
+				</button>
+			</div>
+		</form>
+	</div>
 	<div class="my-3">
 		<p>
 			No account ?

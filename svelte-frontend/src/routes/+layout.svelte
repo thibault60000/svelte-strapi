@@ -48,9 +48,7 @@
 		</svelte:fragment>
 	</AppShell>
 
-	<main>
-		<slot />
-	</main>
+	<slot />
 </div>
 
 <style>
