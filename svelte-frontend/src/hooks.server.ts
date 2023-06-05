@@ -1,4 +1,10 @@
+import { sequence } from '@sveltejs/kit/hooks';
+import { SvelteGoogleAuthHook } from 'svelte-google-auth/server';
 import type { Handle } from '@sveltejs/kit';
+
+import client_secret from '../client_secret.json';
+
+const auth = new SvelteGoogleAuthHook(client_secret.web);
 
 function redirect(location: string, body?: string) {
 	return new Response(body, {
@@ -7,7 +13,7 @@ function redirect(location: string, body?: string) {
 	});
 }
 
-export const handle: Handle = (async ({ event, resolve }) => {
+export const authentication: Handle = (async ({ event, resolve }) => {
 	console.group('[Handle]', new Date());
 	const token = event.cookies.get('token');
 
@@ -35,6 +41,7 @@ export const handle: Handle = (async ({ event, resolve }) => {
 				}
 			});
 			const user = await response.json();
+
 			event.locals.user = user;
 			console.log('✅ [Handle] user', user);
 			console.groupEnd();
@@ -47,3 +54,9 @@ export const handle: Handle = (async ({ event, resolve }) => {
 
 	return await resolve(event);
 }) satisfies Handle;
+
+export const googleAuth: Handle = async ({ event, resolve }) => {
+	return await auth.handleAuth({ event, resolve });
+};
+
+export const handle = sequence(authentication, googleAuth);

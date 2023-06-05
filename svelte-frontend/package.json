@@ -45,6 +45,6 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"google-auth-library": "^8.8.0"
+		"svelte-google-auth": "^0.7.2"
 	}
 }

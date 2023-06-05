@@ -1,8 +1,28 @@
 <script lang="ts">
-	import type { ActionData } from './$types';
+	import { invalidateAll } from '$app/navigation';
+	import { signIn, signOut, initialize } from 'svelte-google-auth/client';
+
+	import type { ActionData, PageData } from './$types';
 	import { enhance } from '$app/forms';
 
 	export let form: ActionData;
+
+	export let data: PageData;
+
+	$: {
+		console.log('===DATA====', data);
+	}
+
+	// data {
+	//  auth: {
+	// 	  access_token: undefined,
+	// 	  client_id: "1098387602742-ici7cnmodqe13e14scjfba3rg6es8g5i.apps.googleusercontent.com"
+	// 	  user: undefined
+	//  }
+	//  user: undefined
+	// }
+
+	initialize(data, invalidateAll);
 </script>
 
 <svelte:head>
@@ -36,17 +56,8 @@
 		</div>
 	</form>
 	<div class="m-3 w-[300px]">
-		<form class="auth-form" method="post" action="?/OAuth2">
-			<div>
-				<button class="btn-auth" type="submit">
-					<img
-						class="btn-auth-img"
-						src="/google_signin_buttons/web/1x/btn_google_signin_dark_pressed_web.png"
-						alt="google sign in"
-					/>
-				</button>
-			</div>
-		</form>
+		<button on:click={() => signIn()}>Sign In</button>
+		<button on:click={() => signOut()}>Sign Out</button>
 	</div>
 	<div class="my-3">
 		<p>
