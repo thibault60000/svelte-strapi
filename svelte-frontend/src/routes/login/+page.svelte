@@ -35,7 +35,9 @@
 			<button type="submit" class="submit" data-testid="login-button">Login</button>
 		</div>
 		<div class="my-3">
-			<button formaction="?/google"> Se connecter avec google </button>
+			<a rel="noopener" href="http://localhost:1337/api/connect/google">
+				Se connecter avec google
+			</a>
 		</div>
 	</form>
 	<div class="my-3">

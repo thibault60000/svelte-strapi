@@ -11,7 +11,6 @@ export const load: PageServerLoad = (event) => {
 
 export const actions: Actions = {
 	login: async (event: RequestEvent) => {
-		console.log('Login action');
 		const formData = Object.fromEntries(await event.request.formData());
 
 		if (!formData.email || !formData.password) {
@@ -38,7 +37,7 @@ export const actions: Actions = {
 
 		const body = await response.json();
 
-		console.log('🔑 body', body);
+		console.log('🔑 [Login] body', body);
 
 		if (body.jwt) {
 			event.cookies.set('token', `Bearer ${body.jwt}`, {
@@ -52,19 +51,5 @@ export const actions: Actions = {
 		}
 
 		throw redirect(302, '/account');
-	},
-	google: async (event: RequestEvent) => {
-		console.log('google action');
-
-		const response = await fetch('http://localhost:1337/api/connect/google', {
-			method: 'GET',
-			headers: { 'Content-Type': 'application/json' }
-		});
-
-		console.log('response', response);
-
-		const body = await response.json();
-
-		console.log('🔑 body', body);
 	}
 } satisfies Actions;

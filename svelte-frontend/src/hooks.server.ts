@@ -9,6 +9,12 @@ function redirect(location: string, body?: string) {
 
 export const handle: Handle = (async ({ event, resolve }) => {
 	console.group('[Handle]', new Date());
+	console.log('➡️ Handle] pathname', event.url.pathname);
+
+	if (event.url.pathname === '/auth/google/callback') {
+		return await resolve(event);
+	}
+
 	const token = event.cookies.get('token');
 
 	const decodedToken = token ? JSON.parse(atob(token.split('.')[1])) : null;
