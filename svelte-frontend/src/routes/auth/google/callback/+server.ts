@@ -1,9 +1,7 @@
-import { json, error, redirect, type RequestEvent } from '@sveltejs/kit';
+import { fail, json, redirect, type RequestEvent } from '@sveltejs/kit';
 
 export async function GET(event: RequestEvent) {
-	const { url, cookies } = event;
-
-	const accessToken = url.searchParams.get('access_token');
+	const accessToken = event.url.searchParams.get('access_token');
 
 	if (!accessToken) return redirect(302, '/login');
 
@@ -11,7 +9,8 @@ export async function GET(event: RequestEvent) {
 		`http://localhost:1337/api/auth/google/callback?access_token=${accessToken}`,
 		{
 			headers: {
-				Accept: 'application/json'
+				Accept: 'application/json',
+				'Content-Type': 'application/json'
 			}
 		}
 	);
@@ -22,11 +21,11 @@ export async function GET(event: RequestEvent) {
 
 	if (response.status !== 200) {
 		console.error('❌ [Auth/Google/Callback]  failed to retrieve user', body.error);
-		throw error(response.status, body.error.message);
+		return fail(response.status, body.error.message);
 	}
 
 	if (body.jwt) {
-		cookies.set('token', `Bearer ${body.jwt}`, {
+		event.cookies.set('token', `Bearer ${body.jwt}`, {
 			httpOnly: true,
 			path: '/',
 			secure: true,
@@ -34,7 +33,8 @@ export async function GET(event: RequestEvent) {
 			maxAge: 60 * 60 * 24 // 1 day
 		});
 
-		console.log('✅ [Auth/Google/Callback] JWT set in cookie', cookies.get('token'));
+		console.log('✅ [Auth/Google/Callback] JWT set in cookie');
+		throw redirect(302, '/account');
 	}
 
 	return json(body);

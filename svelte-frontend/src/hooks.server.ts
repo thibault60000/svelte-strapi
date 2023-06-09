@@ -1,4 +1,5 @@
 import type { Handle } from '@sveltejs/kit';
+import type { HandleFetch } from '@sveltejs/kit';
 
 function redirect(location: string, body?: string) {
 	return new Response(body, {
@@ -7,13 +8,19 @@ function redirect(location: string, body?: string) {
 	});
 }
 
+export const handleFetch = (async ({ request, fetch }) => {
+	console.log('=== REQUEST HANDLE FETCH', request);
+	return await fetch(request);
+}) satisfies HandleFetch;
+
 export const handle: Handle = (async ({ event, resolve }) => {
-	console.group('[Handle]', new Date());
-	console.log('➡️ Handle] pathname', event.url.pathname);
+	console.log('🛣️ [Handle] pathname', event.url.pathname);
 
 	if (event.url.pathname === '/auth/google/callback') {
 		return await resolve(event);
 	}
+
+	console.log('🍪 [Handle] Cookies', event.cookies.getAll());
 
 	const token = event.cookies.get('token');
 
