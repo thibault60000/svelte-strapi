@@ -1,6 +1,7 @@
-import { fail, json, redirect, type RequestEvent } from '@sveltejs/kit';
+import type { PageServerLoad } from './$types';
+import { fail, redirect } from '@sveltejs/kit';
 
-export async function GET(event: RequestEvent) {
+export const load: PageServerLoad = async (event) => {
 	const accessToken = event.url.searchParams.get('access_token');
 
 	if (!accessToken) return redirect(302, '/login');
@@ -26,16 +27,13 @@ export async function GET(event: RequestEvent) {
 
 	if (body.jwt) {
 		event.cookies.set('token', `Bearer ${body.jwt}`, {
-			httpOnly: true,
 			path: '/',
-			secure: true,
-			sameSite: 'strict',
 			maxAge: 60 * 60 * 24 // 1 day
 		});
 
 		console.log('✅ [Auth/Google/Callback] JWT set in cookie');
-		throw redirect(302, '/account');
+		throw redirect(301, '/account');
+	} else {
+		throw redirect(302, '/login');
 	}
-
-	return json(body);
-}
+};
