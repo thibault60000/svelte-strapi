@@ -6,8 +6,8 @@ export interface User {
 	confirmed: boolean;
 	blocked: boolean;
 	role: Role;
-	created_at: string;
-	updated_at: string;
+	createdAt: string;
+	UpatedAt: string;
 	restaurants: Restaurant[];
 }
 

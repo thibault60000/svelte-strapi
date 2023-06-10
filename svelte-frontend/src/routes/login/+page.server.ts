@@ -10,8 +10,7 @@ export const load: PageServerLoad = (event) => {
 };
 
 export const actions: Actions = {
-	default: async (event: RequestEvent) => {
-		console.log('Login action');
+	login: async (event: RequestEvent) => {
 		const formData = Object.fromEntries(await event.request.formData());
 
 		if (!formData.email || !formData.password) {
@@ -38,7 +37,7 @@ export const actions: Actions = {
 
 		const body = await response.json();
 
-		console.log('🔑 body', body);
+		console.log('🔑 [Login] body', body);
 
 		if (body.jwt) {
 			event.cookies.set('token', `Bearer ${body.jwt}`, {
