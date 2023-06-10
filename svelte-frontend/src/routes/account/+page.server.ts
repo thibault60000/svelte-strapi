@@ -10,8 +10,6 @@ export const load: PageServerLoad = (event) => {
 		});
 	}
 
-	console.log('✅ [Account] user', user);
-
 	return {
 		user
 	};

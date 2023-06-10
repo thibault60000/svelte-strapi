@@ -24,7 +24,7 @@
 				</svelte:fragment>
 				<svelte:fragment slot="trail">
 					{#if user}
-						<form method="POST" action="?/logout">
+						<form method="POST" action="/account?/logout">
 							<button
 								type="submit"
 								name="logout"

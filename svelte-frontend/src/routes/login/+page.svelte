@@ -10,7 +10,13 @@
 </svelte:head>
 
 <section>
-	<form method="POST" use:enhance class="container mx-auto my-4" data-testid="login-form">
+	<form
+		method="POST"
+		action="?/login"
+		use:enhance
+		class="container mx-auto my-4"
+		data-testid="login-form"
+	>
 		<h1 class="text-center text-2xl font-bold">Login</h1>
 		<div class="my-1">
 			<label for="email">Email</label>
@@ -27,6 +33,11 @@
 		</div>
 		<div class="my-3">
 			<button type="submit" class="submit" data-testid="login-button">Login</button>
+		</div>
+		<div class="my-3">
+			<a rel="noopener" href="http://localhost:1337/api/connect/google">
+				Se connecter avec google
+			</a>
 		</div>
 	</form>
 	<div class="my-3">
