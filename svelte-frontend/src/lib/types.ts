@@ -26,3 +26,51 @@ export interface Restaurant {
 		created_at: Date;
 	};
 }
+
+export interface Image {
+	id: number;
+	attributes: {
+		name: string;
+		url: string;
+		previewUrl: string;
+		size: number;
+	};
+}
+
+export interface Brand {
+	id: number;
+	attributes: {
+		name: string;
+		image: {
+			data: Image[];
+		};
+	};
+}
+
+export interface AvailableSize {
+	id: number;
+	attributes: {
+		size: number;
+	};
+}
+export interface Sneakers {
+	id: number;
+	attributes: {
+		name: string;
+		description: string;
+		stock: number;
+		price: number;
+		color: string;
+		availableSizes: {
+			data: AvailableSize[];
+		};
+		image: {
+			data: Image[];
+		};
+		brand: {
+			data: Brand;
+		};
+		createdAt: Date;
+		updatedAt: Date;
+	};
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "collectionType",
+  "collectionName": "available_sizes",
+  "info": {
+    "singularName": "available-size",
+    "pluralName": "available-sizes",
+    "displayName": "AvailableSize",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "sneaker": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::sneaker.sneaker",
+      "inversedBy": "availableSizes"
+    }
+  }
+}

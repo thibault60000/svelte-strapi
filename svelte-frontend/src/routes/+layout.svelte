@@ -15,6 +15,7 @@
 
 	import Search from '$lib/components/modals/Search.svelte';
 	import Navbar from '$lib/components/Navbar.svelte';
+	import Footer from '$lib/components/Footer.svelte';
 
 	export let data: LayoutData;
 	$: user = data.user;
@@ -79,7 +80,7 @@
 					</button>
 					<h1 class="h1">
 						<span class="bg-gradient-to-br from-blue-500 to-cyan-300 bg-clip-text text-transparent"
-							>Prout.</span
+							>Sneakers.</span
 						>
 					</h1>
 				</div>
@@ -126,7 +127,9 @@
 		<slot />
 	</main>
 
-	<svelte:fragment slot="footer">Footer</svelte:fragment>
+	<svelte:fragment slot="footer">
+		<Footer />
+	</svelte:fragment>
 </AppShell>
 
 <style>
