@@ -1,21 +1,45 @@
 <script lang="ts">
-	import type { ActionData } from './$types';
-	import { enhance } from '$app/forms';
+	import type { PageData } from './$types';
+	import { page } from '$app/stores';
 
-	export let form: ActionData;
+	import { superForm } from 'sveltekit-superforms/client';
+	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
+
+	import GoogleIcon from '$lib/components/icons/GoogleIcon.svelte';
+
+	export let data: PageData;
+
+	const { form, errors, message, constraints, delayed, enhance, reset } = superForm(data.form, {
+		taintedMessage: 'Do you want to leave this page? Changes you made may not be saved.',
+
+		onError: ({ result, message }) => {
+			console.error('result', result);
+			console.log('message', message);
+			return { result, message };
+		}
+	});
 </script>
 
 <svelte:head>
 	<title>Login</title>
 </svelte:head>
 
-<section class="card p-4">
+<section class="card card-hover p-4">
+	<SuperDebug data={$form} />
+
+	{#if $message}
+		<div class="status" class:error={$page.status >= 400} class:success={$page.status == 200}>
+			{$message}
+		</div>
+	{/if}
+
 	<h1 class="h1">
 		<span
 			class="bg-gradient-to-br mb-2 from-red-500 to-yellow-500 bg-clip-text text-transparent box-decoration-clone"
 			>Login</span
 		>
 	</h1>
+
 	<form
 		method="POST"
 		action="?/login"
@@ -27,30 +51,43 @@
 		<label for="email" class="email">
 			<span> Email </span>
 			<input
-				data-testid="email-input"
 				class="input"
+				class:input-error={$errors.email}
+				{...$constraints.email}
+				bind:value={$form.email}
 				type="email"
+				aria-invalid={$errors.email ? 'true' : undefined}
 				name="email"
 				placeholder="Enter your email"
+				data-testid="email-input"
 			/>
+			{#if $errors.email}<span class="invalid">{$errors.email}</span>{/if}
 		</label>
+
 		<!-- Password -->
 		<label class="label" for="password"
 			><span>Password</span>
 			<input
 				class="input"
+				class:input-error={$errors.password}
+				aria-invalid={$errors.password ? 'true' : undefined}
+				bind:value={$form.password}
 				type="password"
 				name="password"
 				placeholder="Enter your password"
 				data-testid="password-input"
 			/>
+			{#if $errors.password}<span class="invalid">{$errors.password}</span>{/if}
 		</label>
+
 		<div class="my-3">
 			<button
 				type="submit"
+				data-testid="login-button"
 				class="btn btn-sm bg-gradient-to-br variant-gradient-primary-tertiary mt-2"
-				data-testid="login-button">Confirm login</button
 			>
+				{$delayed ? 'Login in progress' : 'Confirm login'}
+			</button>
 			<div class="my-3">
 				<p class="mb-2">Or</p>
 				<a
@@ -58,22 +95,12 @@
 					rel="noopener"
 					href="http://localhost:1337/api/connect/google"
 				>
-					<svg
-						class="border-r border-slate-800 pr-2 mr-2"
-						fill="#1A1A1A"
-						xmlns="http://www.w3.org/2000/svg"
-						viewBox="0 0 30 30"
-						width="24px"
-						height="24px"
-					>
-						<path
-							d="M 15.003906 3 C 8.3749062 3 3 8.373 3 15 C 3 21.627 8.3749062 27 15.003906 27 C 25.013906 27 27.269078 17.707 26.330078 13 L 25 13 L 22.732422 13 L 15 13 L 15 17 L 22.738281 17 C 21.848702 20.448251 18.725955 23 15 23 C 10.582 23 7 19.418 7 15 C 7 10.582 10.582 7 15 7 C 17.009 7 18.839141 7.74575 20.244141 8.96875 L 23.085938 6.1289062 C 20.951937 4.1849063 18.116906 3 15.003906 3 z"
-						/></svg
-					>
+					<GoogleIcon />
 					Login with Google
 				</a>
 			</div>
 		</div>
+		<button on:click={() => reset()}> reset </button>
 	</form>
 	<div class="mt-4">
 		<p class="font-thin">
@@ -82,12 +109,6 @@
 		</p>
 	</div>
 </section>
-
-{#if form?.error}
-	<div class="notice error">
-		{form.error}
-	</div>
-{/if}
 
 <style lang="postcss">
 	input {

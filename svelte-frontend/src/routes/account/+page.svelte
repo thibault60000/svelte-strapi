@@ -10,16 +10,26 @@
 	<title>My account</title>
 </svelte:head>
 
-<section>
+<section class="card card-hover p-4">
 	<div>
-		<h1>My account</h1>
-		<p>Hello, User n°{user.id}</p>
-		<p>username: {user.username}</p>
-		<p>email: {user.email}</p>
-		<p>provider: {user.provider}</p>
-		<p>confirmed:{user.provider}</p>
-		<p>blocked: {user.blocked}</p>
-		<p>createdAt: {user.createdAt}</p>
-		<p>updatedAt: {user.UpatedAt}</p>
+		<h1 class="h1">
+			<span
+				class="bg-gradient-to-br mb-2 from-red-500 to-yellow-500 bg-clip-text text-transparent box-decoration-clone"
+				>My account</span
+			>
+		</h1>
+		<h2 class="my-3">
+			Hello <span class="text-primary-400">
+				{user.username}
+			</span>
+		</h2>
+
+		<hr class="!border-t-4 mb-3" />
+		<p><span class="text-secondary-400"> Email:</span> {user.email}</p>
+		<p><span class="text-secondary-400"> Provider:</span>{user.provider}</p>
+		<p><span class="text-secondary-400"> Confirmed:</span>{user.provider}</p>
+		<p><span class="text-secondary-400"> Blocked: </span>{user.blocked}</p>
+		<p><span class="text-secondary-400"> CreatedAt:</span> {user.createdAt}</p>
+		<p><span class="text-secondary-400"> UpdatedAt:</span> {user.UpatedAt}</p>
 	</div>
 </section>

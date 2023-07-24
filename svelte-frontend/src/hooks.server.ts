@@ -40,6 +40,7 @@ export const handle: Handle = (async ({ event, resolve }) => {
 		}
 	} else {
 		try {
+			// TODO : check if user on event.locals
 			const response = await fetch('http://localhost:1337/api/users/me', {
 				headers: {
 					Authorization: token,

@@ -32,6 +32,16 @@ npm run build
 yarn build
 ```
 
+### Build for production
+
+```
+docker build \
+  --build-arg NODE_ENV=production \
+  # --build-arg STRAPI_URL=https://api.example.com \ # Uncomment to set the Strapi Server URL
+  -t mystrapiapp:latest \ # Replace with your image name
+  -f Dockerfile.prod .
+```
+
 ## ⚙️ Deployment
 
 Strapi gives you many possible deployment options for your project. Find the one that suits you on the [deployment section of the documentation](https://docs.strapi.io/developer-docs/latest/setup-deployment-guides/deployment.html).
@@ -55,3 +65,4 @@ Feel free to check out the [Strapi GitHub repository](https://github.com/strapi/
 ---
 
 <sub>🤫 Psst! [Strapi is hiring](https://strapi.io/careers).</sub>
+
