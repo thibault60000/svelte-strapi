@@ -3,7 +3,7 @@ import type { Load } from '@sveltejs/kit';
 import type { Sneakers } from '$lib/types';
 
 export const load: Load = (async () => {
-	const response = await fetch('http://localhost:1337/api/sneakers');
+	const response = await fetch('http://localhost:1337/api/sneakers?populate=*');
 
 	const json = await response.json();
 

@@ -2,13 +2,13 @@ export interface User {
 	id: number;
 	username: string;
 	email: string;
-	provider: string;
-	confirmed: boolean;
-	blocked: boolean;
-	role: Role;
-	createdAt: string;
-	UpatedAt: string;
-	restaurants: Restaurant[];
+	provider?: string | null;
+	confirmed?: boolean | null;
+	blocked?: boolean | null;
+	role?: Role | null;
+	createdAt?: string | null;
+	UpatedAt?: string | null;
+	restaurants?: Restaurant[] | null;
 }
 
 export interface Role {
