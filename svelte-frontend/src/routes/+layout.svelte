@@ -15,7 +15,7 @@
 	import { storePopup } from '@skeletonlabs/skeleton';
 	storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
 
-	import type { LayoutData } from './$types';
+	import type { LayoutServerData } from './$types';
 
 	import Search from '$lib/components/modals/Search.svelte';
 	import Navbar from '$lib/components/Navbar.svelte';
@@ -23,7 +23,8 @@
 	import SearchIcon from '$lib/components/icons/SearchIcon.svelte';
 	import BurgerIcon from '$lib/components/icons/BurgerIcon.svelte';
 
-	export let data: LayoutData;
+	export let data: LayoutServerData;
+
 	$: user = data.user;
 
 	function drawerOpen(): void {
@@ -82,8 +83,8 @@
 					</button>
 					<h1 class="h1">
 						<span class="bg-gradient-to-br from-blue-500 to-cyan-300 bg-clip-text text-transparent"
-							>Sneakers.</span
-						>
+							>Sneakers.
+						</span>
 					</h1>
 				</div>
 			</svelte:fragment>
@@ -122,6 +123,7 @@
 
 	<svelte:fragment slot="footer">
 		<Footer />
+		{data.deploymentGitBranch}
 	</svelte:fragment>
 </AppShell>
 
